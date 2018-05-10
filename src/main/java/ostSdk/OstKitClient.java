@@ -30,22 +30,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class OkHttpOstKitClient {
+public class OstKitClient {
     private final OkHttpClient client;
     private final HttpUrl baseUrl;
     private final Gson gson = new Gson();
     private final JsonParser jsonParser = new JsonParser();
-    private final static Logger log = LoggerFactory.getLogger(OkHttpOstKitClient.class);
+    private final static Logger log = LoggerFactory.getLogger(OstKitClient.class);
 
-    public static OkHttpOstKitClient create(String apiKey, String apiSecret, String url) {
-        return new OkHttpOstKitClient(apiKey, apiSecret, url);
+    public static OstKitClient create(String apiKey, String apiSecret, String url) {
+        return new OstKitClient(apiKey, apiSecret, url);
     }
 
-    public static OkHttpOstKitClient create(String apiKey, String apiSecret) {
+    public static OstKitClient create(String apiKey, String apiSecret) {
         return create(apiKey, apiSecret, "https://playgroundapi.ost.com");
     }
 
-    private OkHttpOstKitClient(String apiKey, String secretKey, String url) {
+    private OstKitClient(String apiKey, String secretKey, String url) {
         baseUrl = HttpUrl.parse(url);
         Dispatcher dispatcher = new Dispatcher();
         dispatcher.setMaxRequests(500);
@@ -147,8 +147,8 @@ public class OkHttpOstKitClient {
         JsonArray result = data.get(resultType).getAsJsonArray();
         List<T> items = new ArrayList<>();
         for (JsonElement element : result) {
-            T user = gson.fromJson(element, classOfT);
-            items.add(user);
+            T item = gson.fromJson(element, classOfT);
+            items.add(item);
         }
         return items;
     }
@@ -205,7 +205,7 @@ public class OkHttpOstKitClient {
     }
 
     public static void main(String[] args) throws IOException {
-        OkHttpOstKitClient ost = OkHttpOstKitClient.create(args[0], args[1]);
+        OstKitClient ost = OstKitClient.create(args[0], args[1]);
 
         /* USERS functions */
         // Create a user named 'Ria'.

@@ -6,11 +6,14 @@ A Java wrapper for the REST API of [OST KIT](https://kit.ost.com) which is curre
 
 A Branded Token economy must be setup first in order to use the API, see https://kit.ost.com for more information.
 
+## Dependencies
+This client uses `OK HTTP` for web requests. HMAC signing is implemented as a request interceptor.
+
 ## How to use the client
 
 Create the OST KIT client using your Branded Token economy's `API key` and `API secret`.
 ```java
-OkHttpOstKitClient ost = OkHttpOstKitClient.create("YOUR-API-KEY", "YOUR-API-SECRET");
+OstKitClient ost = OstKitClient.create("YOUR-API-KEY", "YOUR-API-SECRET");
 
 /* USERS functions */
 // Create a user named 'Ria'.
@@ -21,14 +24,14 @@ System.out.println(user);
 user = ost.editUser(user.getUuid(), "Fred");
 System.out.println(user);
 
-// List users.
+// List users. NOTE: currently paging is not yet implemented, so only the first 25 users are returned. I know :)
 List<User> users = ost.listUsers();
 System.out.println(users);
 
 
 /* TRANSACTION TYPES functions */
 // Create a transaction type.
-TransactionType transactionType = ost.createTransactionType("Clap1", TransactionTypeKind.USER_TO_USER, 1, TransactionTypeCurrency.BT, 0); // user_to_user transaction of 1 BT named 'Clap'
+TransactionType transactionType = ost.createTransactionType("Clap", TransactionTypeKind.USER_TO_USER, 1, TransactionTypeCurrency.BT, 0); // user_to_user transaction of 1 BT named 'Clap'
 System.out.println(transactionType);
 
 // List transaction types.
@@ -69,12 +72,10 @@ System.out.println(tokenBalance);
 Some things to do, and ideas for potential features:
 
 * Implement paging support and _fetch-all_ list functions, currently only the first 25 items are returned.
-* Improve the **efficiency** of the web client by fully supporting arrays as input type.
+* Make web client properties like timeout, connection pool, etc configurable.
 * Fully document the API and all function parameters and return types.
-* Automatically assign the _company_ as debtor in `company_to_user` and as creditor in `user_to_company` transaction types.
-* Implement the retrieval of a users's _wallet address_ based on its `UUID` in OST KIT, so it can be view directly in [OST View](https://view.ost.com).
 
 ## Questions, feature requests and bug reports
-If you have questions, have a great idea for the client or ran into issues using this client: please report them in the project's [Issues](https://github.com/realJayNay/ost-kit-php-client/issues) area.
+If you have questions, have a great idea for the client or ran into issues using this client: please report them in the project's [Issues](https://github.com/realJayNay/ost-kit-java-client/issues) area.
 
 Brought to you by [Jay Nay](https://github.com/realJayNay)
